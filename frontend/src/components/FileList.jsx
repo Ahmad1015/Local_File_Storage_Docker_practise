@@ -9,8 +9,8 @@ const FileList = ({ files, onFileClick }) => {
       <h2>Uploaded Files</h2>
       <ul>
         {files.map((file, index) => (
-          <li key={index} onClick={() => onFileClick(file)}>
-            {file}
+          <li key={index} onClick={() => onFileClick(file.filename)}>
+            {file.filename}
           </li>
         ))}
       </ul>

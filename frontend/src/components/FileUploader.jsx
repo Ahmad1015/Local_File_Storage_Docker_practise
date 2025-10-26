@@ -6,6 +6,16 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 const FileUploader = ({ onUploadComplete }) => {
   const [isDragging, setIsDragging] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [backendAvailable, setBackendAvailable] = useState(true)
+
+  const checkBackendAvailability = async () => {
+    try {
+      await axios.get(`${API_URL}/health`)
+      setBackendAvailable(true)
+    } catch {
+      setBackendAvailable(false)
+    }
+  }
 
   const handleDrop = async (e) => {
     e.preventDefault()
@@ -20,6 +30,11 @@ const FileUploader = ({ onUploadComplete }) => {
   }
 
   const uploadFiles = async (files) => {
+    if (!backendAvailable) {
+      alert('Backend is unavailable. Files cannot be uploaded at this time.')
+      return
+    }
+
     const formData = new FormData()
     files.forEach(file => formData.append('files', file))
 
@@ -37,6 +52,10 @@ const FileUploader = ({ onUploadComplete }) => {
     }
   }
 
+  React.useEffect(() => {
+    checkBackendAvailability()
+  }, [])
+
   return (
     <div
       className={`uploader ${isDragging ? 'dragover' : ''}`}
@@ -47,11 +66,12 @@ const FileUploader = ({ onUploadComplete }) => {
       onDragLeave={() => setIsDragging(false)}
       onDrop={handleDrop}
     >
+      {!backendAvailable && <p style={{ color: 'red' }}>Backend is unavailable. Files cannot be uploaded.</p>}
       <p>Drag and drop your files here</p>
       <p>or</p>
       <label>
         {uploading ? 'Uploading...' : 'Browse Files'}
-        <input type="file" multiple onChange={handleBrowse} disabled={uploading} />
+        <input type="file" multiple onChange={handleBrowse} disabled={uploading || !backendAvailable} />
       </label>
     </div>
   )

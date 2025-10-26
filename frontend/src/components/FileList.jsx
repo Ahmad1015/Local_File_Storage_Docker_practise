@@ -1,6 +1,10 @@
 import React from 'react'
 
-const FileList = ({ files, onFileClick }) => {
+const FileList = ({ files, onFileClick, backendAvailable }) => {
+  if (!backendAvailable) {
+    return <p style={{ color: 'red' }}>Backend is unavailable. File list cannot be loaded.</p>;
+  }
+
   if (files.length === 0)
     return <p>No files uploaded yet.</p>
 

@@ -4,7 +4,7 @@ import FileUploader from './components/FileUploader'
 import FileList from './components/FileList'
 import './styles/index.css'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://backend:5000'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const App = () => {
   const [files, setFiles] = useState([])

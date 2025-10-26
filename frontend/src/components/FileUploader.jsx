@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://backend:5000'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const FileUploader = ({ onUploadComplete }) => {
   const [isDragging, setIsDragging] = useState(false)
